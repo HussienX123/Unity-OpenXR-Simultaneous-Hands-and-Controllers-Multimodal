@@ -31,11 +31,23 @@ Enables `XR_META_simultaneous_hands_and_controllers` in Unity using only the bui
 - **`SimultaneousHandsAndControllersStatus`:** Runtime component exposing `IsExtensionEnabled`, `SystemReportsSupport`, and `ResumeSucceeded`.
 - **`ControllerMotionData`:** Runtime component exposing controller `rotation`, `forward`, `linearVelocity`, `angularVelocity`, `speed`, `trackingState`, `isTracked`, and `isVelocityValid`.
 - **`ControllerPoseIsolation`:** Runtime component that isolates controller `TrackedPoseDriver` bindings to `<XRControllerWithRumble>` and locks the 3D controller visual at its last tracked pose when set down.
+- **`MultimodalSetupUtility` (Editor):** Automatically configures OpenXR Plug-in Management and OpenXR Feature Settings for both **Standalone (Windows, Mac, Linux)** and **Android**, imports required XRI / XR Hands samples if missing, and provides **Tools > OpenXR Multimodal** menu commands.
 - **`XRSimultaneousTrackingDiagnostics` (Sample):** Logs platform, active OpenXR runtime name/version, hand and controller tracked states, simultaneous flag, and controller motion once per second.
 
 ---
 
-## Quick Install (Package Manager Git URL)
+## Quick Install
+
+### Option A: Download `.unitypackage` (Includes Demo Scene & Configured XR Rig Prefab)
+
+1. Download **`OpenXR-Simultaneous-Hands-and-Controllers-v0.1.0-experimental.unitypackage`** from [**GitHub Releases**](https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-Multimodal/releases/tag/v0.1.0-experimental).
+2. In your Unity project (with `com.unity.xr.openxr` and `com.unity.xr.interaction.toolkit` installed), select **Assets > Import Package > Custom Package...** and import the `.unitypackage`.
+3. On import, `MultimodalSetupUtility` automatically:
+   - Installs `com.unity.xr.hands` (if not already installed) and imports the required XRI / XR Hands samples (`Starter Assets`, `Hands Interaction Demo`, `HandVisualizer`).
+   - Enables `Meta Simultaneous Hands and Controllers`, `Hand Tracking Subsystem`, `Meta Hand Tracking Aim`, `Hand Interaction Profile`, and `Touch / Touch Pro / Touch Plus` controller profiles on both **Standalone** and **Android**, and disables **`Hand Interaction Poses`**.
+4. Open **`Assets/Scenes/MultimodalTest.unity`** (or click **Tools > OpenXR Multimodal > 4. Open Multimodal Demo Scene**).
+
+### Option B: Install via Package Manager (Git URL)
 
 In Unity **Window > Package Management > Package Manager**, click **+ > Add package from git URL...** and enter:
 

@@ -15,7 +15,18 @@
 
 ---
 
-## 1. Install via Unity Package Manager (Git URL)
+## 1. Install the Package
+
+### Option A: Import `.unitypackage` from GitHub Releases (Includes Demo Scene & XR Rig Prefab)
+
+1. Download **`OpenXR-Simultaneous-Hands-and-Controllers-v0.1.0-experimental.unitypackage`** from [**GitHub Releases**](https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-Multimodal/releases/tag/v0.1.0-experimental).
+2. In your Unity project (with **OpenXR Plugin** and **XR Interaction Toolkit** installed), choose **Assets > Import Package > Custom Package...** and import all files.
+3. `MultimodalSetupUtility` automatically runs on import to:
+   - Install `com.unity.xr.hands` (if missing) and import the required **Starter Assets**, **Hands Interaction Demo**, and **HandVisualizer** samples.
+   - Configure **OpenXR Plug-in Management** and **OpenXR Feature Settings** for both **Standalone (Windows, Mac, Linux)** and **Android** (including disabling **Hand Interaction Poses**).
+4. Open **`Assets/Scenes/MultimodalTest.unity`** (or use **Tools > OpenXR Multimodal > 4. Open Multimodal Demo Scene**). You can also convert any existing scene rig using **Tools > OpenXR Multimodal > 3. Convert Active Scene XR Rig for Simultaneous Tracking**.
+
+### Option B: Install via Unity Package Manager (Git URL)
 
 1. In the Unity Editor, open **Window > Package Management > Package Manager**.
 2. Click the **+** button in the top-left corner and choose **Add package from git URL...**.

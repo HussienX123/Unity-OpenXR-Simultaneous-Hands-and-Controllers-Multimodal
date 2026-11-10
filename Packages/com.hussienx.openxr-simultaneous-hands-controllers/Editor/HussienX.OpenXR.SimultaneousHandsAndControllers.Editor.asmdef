@@ -4,7 +4,9 @@
   "references": [
     "HussienX.OpenXR.SimultaneousHandsAndControllers",
     "Unity.XR.OpenXR",
-    "Unity.XR.OpenXR.Editor"
+    "Unity.XR.OpenXR.Editor",
+    "Unity.XR.Management",
+    "Unity.XR.Management.Editor"
   ],
   "includePlatforms": [
     "Editor"
