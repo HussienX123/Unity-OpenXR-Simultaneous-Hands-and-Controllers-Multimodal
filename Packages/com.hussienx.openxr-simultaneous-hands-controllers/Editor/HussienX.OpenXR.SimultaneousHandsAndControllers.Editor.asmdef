@@ -1,0 +1,20 @@
+{
+  "name": "HussienX.OpenXR.SimultaneousHandsAndControllers.Editor",
+  "rootNamespace": "HussienX.OpenXR.SimultaneousHandsAndControllers.Editor",
+  "references": [
+    "HussienX.OpenXR.SimultaneousHandsAndControllers",
+    "Unity.XR.OpenXR",
+    "Unity.XR.OpenXR.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

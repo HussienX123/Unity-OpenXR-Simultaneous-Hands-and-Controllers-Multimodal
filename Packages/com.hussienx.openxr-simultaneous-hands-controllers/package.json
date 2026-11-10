@@ -1,0 +1,33 @@
+{
+  "name": "com.hussienx.openxr-simultaneous-hands-controllers",
+  "displayName": "OpenXR Simultaneous Hands and Controllers (Experimental)",
+  "version": "0.1.0-experimental",
+  "unity": "6000.0",
+  "description": "Experimental, pending device verification. Enables XR_META_simultaneous_hands_and_controllers through Unity's OpenXR stack with no Meta SDK. Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest).",
+  "author": {
+    "name": "HussienX",
+    "url": "https://github.com/HussienX123"
+  },
+  "license": "MIT",
+  "keywords": [
+    "openxr",
+    "meta-quest",
+    "hand-tracking",
+    "xr-hands",
+    "xr-interaction-toolkit",
+    "multimodal",
+    "quest-link",
+    "vr"
+  ],
+  "dependencies": {
+    "com.unity.xr.openxr": "1.16.1",
+    "com.unity.xr.hands": "1.7.3"
+  },
+  "samples": [
+    {
+      "displayName": "Diagnostics",
+      "description": "Logs platform, active OpenXR runtime, controller and hand tracked states, simultaneous tracking status, and controller motion once per second.",
+      "path": "Samples~/Diagnostics"
+    }
+  ]
+}
