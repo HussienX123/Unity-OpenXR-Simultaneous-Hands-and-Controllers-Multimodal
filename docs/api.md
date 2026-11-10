@@ -1,6 +1,6 @@
 # Public API Reference
 
-> **Status: Experimental, pending device verification.**
+> **Status: Verified on Hardware & Unity Editor.**
 > Namespace: `HussienX.OpenXR.SimultaneousHandsAndControllers`
 > Assembly: `HussienX.OpenXR.SimultaneousHandsAndControllers.dll`
 

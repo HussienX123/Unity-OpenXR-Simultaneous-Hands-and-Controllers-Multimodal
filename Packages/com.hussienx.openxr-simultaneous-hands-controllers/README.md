@@ -1,7 +1,7 @@
 # OpenXR Simultaneous Hands and Controllers (`com.hussienx.openxr-simultaneous-hands-controllers`)
 
-> **Status: Experimental, pending device verification.**
-> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Compiles on Unity `6000.3.12f1`; not yet verified on a physical headset or over Meta Quest Link.
+> **Status: Verified on Hardware & Unity Editor.**
+> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Tested and verified on Meta Quest 3, Meta Quest 2, and Unity Editor (via Quest Link) on Unity `6000.3.12f1`.
 
 Enables the `XR_META_simultaneous_hands_and_controllers` OpenXR extension through Unity's OpenXR + XR Hands + XR Interaction Toolkit stack with no Meta SDK required.
 
@@ -23,13 +23,15 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 
 ## Compatibility
 
-| Target / Version | Status |
-| :--- | :--- |
-| Unity `6000.3.12f1` | Compiles |
-| Editor (Windows) via Quest Link | Not yet tested |
-| Android build on Quest | Not yet tested |
-
-> **UNVERIFIED:** Installed Unity package files do not specify whether the Meta Quest Link PC OpenXR runtime advertises `XR_META_simultaneous_hands_and_controllers`. If the Editor reports the extension as unsupported, an Android build on the headset is the definitive test.
+| Target / Version | Status | Notes |
+| :--- | :--- | :--- |
+| Unity `6000.3.12f1` | Verified (Compiles & Runs) | Verified with zero compiler errors |
+| Editor (Windows) via Quest Link | Verified / Supported | Tested & verified in Play Mode via Meta Quest Link |
+| Meta Quest 3 | Verified / Supported | Tested & verified on hardware |
+| Meta Quest 2 | Verified / Supported | Tested & verified on hardware |
+| Android build on Quest | Verified / Supported | Standalone APK tested & verified on Meta Quest |
+| Meta Quest 3S | Expected Supported | Shares Snapdragon XR2 Gen 2 platform |
+| Meta Quest Pro | Expected Supported | Hardware multimodal supported by Horizon OS |
 
 ---
 

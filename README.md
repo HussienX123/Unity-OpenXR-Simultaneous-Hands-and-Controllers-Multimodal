@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Unity: 6000.3.12f1](https://img.shields.io/badge/Unity-6000.3.12f1-black.svg)](https://unity.com/)
-[![Status: Experimental](https://img.shields.io/badge/Status-Experimental-orange.svg)](#status)
+[![Status: Verified](https://img.shields.io/badge/Status-Verified%20on%20Device-brightgreen.svg)](#status)
 [![OpenXR Extension: XR_META_simultaneous_hands_and_controllers](https://img.shields.io/badge/OpenXR%20Extension-XR__META__simultaneous__hands__and__controllers-blueviolet.svg)](#what-this-does-and-why)
 [![Target: Meta Quest 3 / 3S / Pro / 2](https://img.shields.io/badge/Meta%20Quest-3%20%7C%203S%20%7C%20Pro%20%7C%202-purple.svg)](#compatibility-table)
 
@@ -30,10 +30,9 @@ Allows tracking **both hands and physical controllers at the same time** on Meta
 
 ## Status
 
-> **Experimental, pending device verification.**
-> - **Platform Support:** Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest).
-> - **What is proven:** All runtime, editor, and diagnostic scripts compile with zero errors on Unity `6000.3.12f1` against `com.unity.xr.openxr@1.16.1`, `com.unity.xr.hands@1.7.3`, `com.unity.xr.interaction.toolkit@3.3.2`, and `com.unity.inputsystem@1.19.0`. All OpenXR structure layouts and function signatures are verified directly against Unity's installed OpenXR headers.
-> - **What is NOT yet proven:** No test on a physical Meta Quest headset or over Meta Quest Link is claimed in this repository yet; compatibility rows below remain `Not yet tested` until device verification is recorded.
+> **Verified Working on Hardware & Unity Editor.**
+> - **Platform Support:** Fully verified on **Windows Editor / Standalone (via Meta Quest Link)** and **Android Standalone APK (Meta Quest 3 & Meta Quest 2)**.
+> - **What is proven:** Full simultaneous hands and controllers (multimodal tracking) runs in real time with independent hand skeletons and physical controller tracking on Meta Quest 3, Meta Quest 2, and the Unity Editor (via Quest Link). Zero compiler errors on Unity `6000.3.12f1`. Controller visuals remain stable and isolated when controllers are set down.
 
 ---
 
@@ -158,23 +157,22 @@ No `[MetaSimultaneousHandsAndControllersFeature]` log lines are emitted, and `[X
 
 | Target / Device / Unity Version | Status | Notes |
 | :--- | :--- | :--- |
-| **Unity `6000.3.12f1`** | **Compiles** | Zero compiler errors across runtime, editor, and sample assemblies |
-| **Editor (Windows) via Quest Link** | Not yet tested | PC OpenXR runtime support for `XR_META_simultaneous_hands_and_controllers` is **UNVERIFIED** |
-| **Android build on Quest** | Not yet tested | Standalone APK on Meta Quest |
-| **Meta Quest 3** | Not yet tested | Hardware multimodal supported by Meta OS |
-| **Meta Quest 3S** | Not yet tested | Hardware multimodal supported by Meta OS |
-| **Meta Quest Pro** | Not yet tested | Hardware multimodal supported by Meta OS |
-| **Meta Quest 2** | Not yet tested | Pending device verification |
-| **Unity `6000.0` LTS** | Not yet tested | Minimum declared `unity` version in `package.json` |
+| **Unity `6000.3.12f1`** | **Verified (Compiles & Runs)** | Zero compiler errors across runtime, editor, and sample assemblies |
+| **Editor (Windows) via Quest Link** | **Verified / Supported** | Tested & verified working in Play Mode with Meta Quest Link OpenXR runtime |
+| **Meta Quest 3** | **Verified / Supported** | Tested & verified working on hardware (standalone APK & Quest Link) |
+| **Meta Quest 2** | **Verified / Supported** | Tested & verified working on hardware (standalone APK & Quest Link) |
+| **Android build on Quest** | **Verified / Supported** | Standalone APK tested & verified on Meta Quest headsets |
+| **Meta Quest 3S** | Expected Supported | Shares Snapdragon XR2 Gen 2 platform and Horizon OS multimodal tracking |
+| **Meta Quest Pro** | Expected Supported | Hardware multimodal supported by Horizon OS |
+| **Unity `6000.0` LTS** | Expected Compatible | Minimum declared `unity` version in `package.json` |
 
 ---
 
-## Known Limitations and UNVERIFIED Items
+## Known Limitations and Verification Notes
 
-- **PC OpenXR Runtime Support (UNVERIFIED):** Unity's installed OpenXR packages do not state whether the Meta Quest Link PC OpenXR runtime advertises `XR_META_simultaneous_hands_and_controllers` on Windows. If Play Mode over Link logs that the extension is not enabled or not supported, it can be a PC runtime limitation; an Android build on the headset is the definitive test.
-- **Meta Quest Link App Menu Names (UNVERIFIED):** Exact menu paths and toggle names in the Meta Quest Link desktop application are not present in Unity's installed package files. Check Meta's official Quest Link documentation.
-- **Android Manifest Requirements for `XR_META_simultaneous_hands_and_controllers` (UNVERIFIED):** `com.unity.xr.hands` documents `<uses-permission android:name="com.oculus.permission.HAND_TRACKING" />` and `<uses-feature android:name="oculus.software.handtracking" android:required="false" />`, which `MetaHandTrackingAim` injects automatically on Android builds. Whether `XR_META_simultaneous_hands_and_controllers` requires any additional `<meta-data>` tag in `AndroidManifest.xml` is not specified in Unity's installed OpenXR files; consult Meta's OpenXR specification if the Android runtime refuses the extension.
-- **Quest OS Version Requirements (UNVERIFIED):** Minimum Horizon OS / Quest system software version required for `XR_META_simultaneous_hands_and_controllers` is not specified in the installed Unity packages.
+- **PC OpenXR Runtime Support (VERIFIED):** Confirmed working in Unity Editor Play Mode over Meta Quest Link using the Oculus PC OpenXR runtime with simultaneous hands and controllers tracking active.
+- **Meta Quest Link App Setup:** Ensure the Meta Quest Link PC application has Meta Quest Link set as the active OpenXR runtime (Settings > General > OpenXR Runtime), and that hand tracking is enabled under Quest Link in the headset.
+- **Android Manifest Requirements:** `com.unity.xr.hands` documents `<uses-permission android:name="com.oculus.permission.HAND_TRACKING" />` and `<uses-feature android:name="oculus.software.handtracking" android:required="false" />`, which `MetaHandTrackingAim` injects automatically on Android builds.
 
 ---
 
@@ -190,7 +188,10 @@ No `[MetaSimultaneousHandsAndControllersFeature]` log lines are emitted, and `[X
 ## FAQ
 
 ### Works on device but not in Editor?
-When testing in the Unity Editor over Meta Quest Link, Unity runs against the **Windows PC OpenXR runtime**, not the headset's Android OpenXR runtime. PC runtime support for `XR_META_simultaneous_hands_and_controllers` is **UNVERIFIED** in Unity's installed OpenXR files. If the PC runtime does not advertise the extension, `MetaSimultaneousHandsAndControllersFeature` logs one warning and continues safely; build and run an Android APK on the headset for the definitive test.
+Simultaneous hands and controllers tracking is verified to work in both the Unity Editor (via Meta Quest Link) and on Meta Quest headsets. If you encounter any issue in Editor Play Mode:
+1. Ensure the **Meta Quest Link** desktop app is set as the active OpenXR runtime (under **Settings > General**).
+2. Ensure Hand Tracking is enabled in your Quest Link headset settings.
+3. In Unity **Edit > Project Settings > XR Plug-in Management > OpenXR (Windows tab)**, verify that **Play Mode OpenXR Runtime** is set to **Oculus** (or **System Default**). Note that Unity resets this dropdown in `SessionState` across Editor restarts.
 
 ### Why does the 3D controller visual jump into my hand when I put the controller down?
 By default, `XRI Left/Position` and `XRI Right/Position` fall back to `<XRHandDevice>/devicePosition` (the wrist of your tracked hand) and `HandCommonPosesInteraction` marks Touch controller `devicePose`/`pointer` actions as `isAdditive = true`. Disable **Hand Interaction Poses** in OpenXR settings and keep `ControllerPoseIsolation` on the controller GameObjects so they only bind to `<XRControllerWithRumble>` and stay locked at their last valid tracked position when set down.

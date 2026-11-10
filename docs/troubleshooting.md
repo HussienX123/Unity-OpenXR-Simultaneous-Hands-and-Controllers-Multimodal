@@ -1,7 +1,7 @@
 # Troubleshooting
 
-> **Status: Experimental, pending device verification.**
-> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Compiles on Unity `6000.3.12f1`; not yet verified on a physical headset or over Meta Quest Link.
+> **Status: Verified on Hardware & Unity Editor.**
+> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Tested and verified on Meta Quest 3, Meta Quest 2, and Windows Editor via Quest Link on Unity `6000.3.12f1`.
 
 ---
 
@@ -21,10 +21,11 @@ or:
 ```
 
 ### Cause & Resolution
-- **PC Runtime Support (UNVERIFIED):** Unity's installed OpenXR packages do not document whether the Meta Quest Link PC OpenXR runtime advertises `XR_META_simultaneous_hands_and_controllers` or returns `supportsSimultaneousHandsAndControllers = 1` on Windows.
-- When running in the Unity Editor over Meta Quest Link, Unity communicates with the **PC OpenXR runtime**, not the Android OpenXR runtime on the headset.
-- If the PC OpenXR runtime does not expose `XR_META_simultaneous_hands_and_controllers`, `MetaSimultaneousHandsAndControllersFeature` logs a single warning and continues safely without crashing.
-- **Definitive Test:** Build and run an **Android APK** directly on the Meta Quest headset.
+- **PC Runtime Configuration:** Simultaneous tracking is verified to work over Meta Quest Link in the Unity Editor. If the PC runtime logs unsupported or not enabled:
+  1. Open the **Meta Quest Link** desktop application, go to **Settings > General**, and verify that **OpenXR Runtime** is set to active (Meta Quest Link).
+  2. Inside the headset under Link settings, verify **Hand Tracking** over Link is enabled.
+  3. In Unity **Edit > Project Settings > XR Plug-in Management > OpenXR (Windows tab)**, set **Play Mode OpenXR Runtime** to **Oculus** (or **System Default**). Note that Unity resets this dropdown in `SessionState` across Editor restarts.
+  4. Ensure the Quest Link session is established and active before starting Unity Play Mode.
 
 ---
 

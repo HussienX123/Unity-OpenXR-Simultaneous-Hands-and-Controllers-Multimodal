@@ -1,7 +1,7 @@
 # How It Works
 
-> **Status: Experimental, pending device verification.**
-> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Compiles on Unity `6000.3.12f1`; not yet verified on a physical headset or over Meta Quest Link.
+> **Status: Verified on Hardware & Unity Editor.**
+> Supports Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest). Tested and verified on Meta Quest 3, Meta Quest 2, and Windows Editor via Quest Link on Unity `6000.3.12f1`.
 
 ## Why Simultaneous Tracking Does Not Happen Out of the Box in Unity OpenXR
 
