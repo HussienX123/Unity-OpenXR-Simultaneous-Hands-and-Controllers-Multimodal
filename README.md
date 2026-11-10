@@ -6,7 +6,7 @@
 
 Enables `XR_META_simultaneous_hands_and_controllers` in Unity using only the built-in OpenXR, XR Hands, and XR Interaction Toolkit packages with no Meta SDK—supporting Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest) builds.
 
-![Hero Screenshot Placeholder](docs/images/PLACEHOLDER-hero.png)
+![Hero: Hands and Controllers Multimodal Scene](docs/images/hero.png)
 
 ---
 
@@ -66,7 +66,7 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 3. Under **OpenXR Feature Groups** (Windows, Mac, Linux tab), enable **Meta Simultaneous Hands and Controllers**, **Hand Tracking Subsystem**, and **Meta Hand Tracking Aim**.
 4. Under **Enabled Interaction Profiles** (Windows, Mac, Linux tab), enable **Hand Interaction Profile** and **Oculus Touch Controller Profile** (plus **Meta Quest Touch Pro / Plus** profiles if used). Leave **Hand Interaction Poses** (`HandCommonPosesInteraction`) **disabled**.
 
-![Standalone OpenXR Settings Placeholder](docs/images/PLACEHOLDER-openxr-settings-standalone.png)
+![Standalone OpenXR Settings](docs/images/openxr-settings-standalone.png)
 
 ### B. Android (Meta Quest Build)
 
@@ -75,7 +75,7 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 3. Under **Enabled Interaction Profiles** (Android tab), enable **Hand Interaction Profile**, **Oculus Touch Controller Profile**, **Meta Quest Touch Pro Controller Profile**, and **Meta Quest Touch Plus Controller Profile**. Leave **Hand Interaction Poses** (`HandCommonPosesInteraction`) **disabled**.
 4. Build and run on the headset (`IL2CPP`, `ARM64`, Minimum API Level `29`+).
 
-![Android OpenXR Settings Placeholder](docs/images/PLACEHOLDER-openxr-settings-android.png)
+![Android OpenXR Settings](docs/images/openxr-settings-android.png)
 
 ### C. Shared Scene Steps (Both Platforms)
 
@@ -122,7 +122,7 @@ No `[MetaSimultaneousHandsAndControllersFeature]` log lines are emitted, and `[X
 [XRDiagnostics] Platform=<platform> | Runtime=<runtime> v<version> | Controller(L=False, R=True) | Hand(L=False, R=False) | Simultaneous=False (L_Both=False, R_Both=False) | Motion(...)
 ```
 
-![Console Logs Placeholder](docs/images/PLACEHOLDER-console-logs.png)
+![Console Logs](docs/images/console-logs.png)
 
 ---
 
