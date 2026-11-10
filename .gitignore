@@ -1,0 +1,72 @@
+# Unity generated directories
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Unity package samples (import via Package Manager)
+/Assets/Samples/
+/Assets/Samples.meta
+
+# Visual Studio / Rider / IDE cache
+.vs/
+.idea/
+.vscode/
+.vsconfig
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash / memory dumps
+sysinfo.txt
+*.dmp
+*.mdmp
+crash.dmp
+
+# Builds & signing credentials
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.keystore
+*.keystore.meta
+*.jks
+*.jks.meta
+
+# Addressables & Crashlytics
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+crashlytics-build.properties
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
