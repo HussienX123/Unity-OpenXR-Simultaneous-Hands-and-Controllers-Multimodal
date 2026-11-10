@@ -141,6 +141,45 @@ namespace HussienX.OpenXR.SimultaneousHandsAndControllers.Editor
         }
 
         /// <summary>
+        /// Exports the distribution .unitypackage to Builds/OpenXR-Simultaneous-Hands-and-Controllers-v0.1.0-experimental.unitypackage.
+        /// </summary>
+        [MenuItem("Tools/OpenXR Multimodal/6. Export Distribution .unitypackage", false, 60)]
+        public static void ExportDistributionPackageMenu()
+        {
+            ExportDistributionPackage();
+        }
+
+        public static string ExportDistributionPackage(string outputPath = "Builds/OpenXR-Simultaneous-Hands-and-Controllers-v0.1.0-experimental.unitypackage")
+        {
+            var exportPaths = new List<string>
+            {
+                "Packages/com.hussienx.openxr-simultaneous-hands-controllers",
+                k_DemoScenePath,
+                k_DemoRigPrefabPath,
+                "Assets/Scripts/XR"
+            };
+
+            var validPaths = new List<string>();
+            foreach (var p in exportPaths)
+            {
+                if (File.Exists(p) || Directory.Exists(p))
+                {
+                    validPaths.Add(p);
+                }
+            }
+
+            var dir = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            AssetDatabase.ExportPackage(validPaths.ToArray(), outputPath, ExportPackageOptions.Recurse);
+            Debug.Log($"[OpenXR Multimodal] Exported distribution package ({validPaths.Count} items) to '{outputPath}'.");
+            return outputPath;
+        }
+
+        /// <summary>
         /// Programmatically enables the OpenXR loader and all required OpenXR features for Standalone and Android,
         /// and disables <c>HandCommonPosesInteraction</c> ("Hand Interaction Poses") so controller visuals do not
         /// snap to tracked hands when controllers are placed down.

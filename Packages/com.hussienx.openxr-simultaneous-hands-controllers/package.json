@@ -12,11 +12,16 @@
   "keywords": [
     "openxr",
     "meta-quest",
+    "simultaneous-hands-and-controllers",
+    "multimodal",
     "hand-tracking",
+    "controller-tracking",
     "xr-hands",
     "xr-interaction-toolkit",
-    "multimodal",
     "quest-link",
+    "quest-3",
+    "quest-pro",
+    "quest-3s",
     "vr"
   ],
   "dependencies": {

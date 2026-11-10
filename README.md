@@ -3,10 +3,28 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Unity: 6000.3.12f1](https://img.shields.io/badge/Unity-6000.3.12f1-black.svg)](https://unity.com/)
 [![Status: Experimental](https://img.shields.io/badge/Status-Experimental-orange.svg)](#status)
+[![OpenXR Extension: XR_META_simultaneous_hands_and_controllers](https://img.shields.io/badge/OpenXR%20Extension-XR__META__simultaneous__hands__and__controllers-blueviolet.svg)](#what-this-does-and-why)
+[![Target: Meta Quest 3 / 3S / Pro / 2](https://img.shields.io/badge/Meta%20Quest-3%20%7C%203S%20%7C%20Pro%20%7C%202-purple.svg)](#compatibility-table)
 
-Enables `XR_META_simultaneous_hands_and_controllers` in Unity using only the built-in OpenXR, XR Hands, and XR Interaction Toolkit packages with no Meta SDK—supporting Windows Editor / Standalone (via Meta Quest Link) and Android (Meta Quest) builds.
+Enables **`XR_META_simultaneous_hands_and_controllers` (Multimodal Tracking)** in Unity using only the standard OpenXR stack (**Unity OpenXR Plugin**, **XR Hands**, and **XR Interaction Toolkit (XRI)**)—**no Meta XR Core SDK, no Oculus Integration package required**.
 
-![Hero: Hands and Controllers Multimodal Scene](docs/images/hero.png)
+Allows tracking **both hands and physical controllers at the same time** on Meta Quest headsets, supporting both **Windows Editor / PCVR (via Meta Quest Link)** and **Android (standalone Meta Quest APK builds)**.
+
+![OpenXR Simultaneous Hands and Controllers (Multimodal) Demo in Unity](docs/images/openxr-simultaneous-hands-controllers.gif)
+
+*Live demonstration of simultaneous hands and controllers (multimodal tracking) in Unity OpenXR: tracked hand skeletons and controller models move and update independently in real time.*
+
+---
+
+## Key Features
+
+- **Simultaneous Hands & Controllers (Multimodal):** Enables `XR_META_simultaneous_hands_and_controllers` through an `OpenXRFeature` without importing the heavy Meta SDK or Oculus Integration assets.
+- **Pure Unity OpenXR Stack:** Fully compatible with **Unity OpenXR Plugin** (`1.16.1`+), **XR Hands** (`1.7.3`+), and **XR Interaction Toolkit** (`3.3.2`+).
+- **Dual Platform Support:** Configured for **Windows Editor / Standalone** (via Meta Quest Link / Air Link) and **Android** (Meta Quest 3, Quest 3S, Quest Pro, and Quest 2 standalone builds).
+- **Controller Pose Isolation:** Prevents physical Touch controller visuals from snapping to tracked hands when a controller is set down on a desk or held passively.
+- **Controller Motion & IMU Data:** Component (`ControllerMotionData`) providing real-time controller rotation, forward vector, linear velocity, angular velocity, speed, and tracking confidence.
+- **3D Object Motion Mapper & Status Display:** Component (`ControllerMotionObjectMapper`) to map controller rotation to 3D objects, display live `MOVING` vs `STATIC` status on **TextMeshPro**, and provide a one-click `Recenter()` function.
+- **Automated Editor Setup:** One-click menu utilities (`Tools > OpenXR Multimodal`) to automatically configure OpenXR settings, import required package samples, and convert existing scene rigs for simultaneous tracking.
 
 ---
 
@@ -21,15 +39,18 @@ Enables `XR_META_simultaneous_hands_and_controllers` in Unity using only the bui
 
 ## What This Does and Why
 
-### Why It Is Needed
-1. **Unity's OpenXR packages do not request the extension:** `com.unity.xr.openxr` (`1.16.1`) defines the structure type constants (`1000532001`, `1000532002`, `1000532003`) in `XrStructureType.cs` and the native C definitions in `openxr_reflection_full.h`, but no built-in OpenXR feature requests `XR_META_simultaneous_hands_and_controllers` or calls `xrResumeSimultaneousHandsAndControllersTrackingMETA`.
-2. **`XRInputModalityManager` disables hands when a controller is active:** In `com.unity.xr.interaction.toolkit` (`3.3.2`), `XRInputModalityManager` deactivates the hand GameObject hierarchy whenever a controller is tracked on that side.
-3. **Default XRI controller bindings fall back to tracked hands:** `XRI Left/Position` and `XRI Right/Position` include `<XRHandDevice>/devicePosition` as a fallback, and `HandCommonPosesInteraction` marks controller `devicePose`/`pointer` actions as `isAdditive = true`, causing a set-down controller visual to snap into the center of your tracked hand unless isolated.
+### The Problem in Unity's Default OpenXR Stack
+
+1. **Unity's OpenXR packages do not request the extension:** While `com.unity.xr.openxr` defines the structure constants (`1000532001`, `1000532002`, `1000532003`) in `XrStructureType.cs` and native C definitions in `openxr_reflection_full.h`, no built-in OpenXR feature requests `XR_META_simultaneous_hands_and_controllers` or calls `xrResumeSimultaneousHandsAndControllersTrackingMETA`.
+2. **`XRInputModalityManager` disables hands when a controller is active:** In `com.unity.xr.interaction.toolkit` (`3.3.2`), `XRInputModalityManager` deactivates the hand GameObject hierarchy whenever a controller is tracked on that side, preventing both from rendering simultaneously.
+3. **Default XRI controller bindings fall back to tracked hands:** `XRI Left/Position` and `XRI Right/Position` include `<XRHandDevice>/devicePosition` as a fallback, and `HandCommonPosesInteraction` marks controller `devicePose`/`pointer` actions as `isAdditive = true`. This causes a set-down controller visual to jump into the center of your tracked hand unless isolated.
 
 ### What This Repository Provides
+
 - **`MetaSimultaneousHandsAndControllersFeature` (`OpenXRFeature`):** Requests `XR_META_simultaneous_hands_and_controllers` on both `BuildTargetGroup.Android` and `BuildTargetGroup.Standalone`, queries system support via `xrGetSystemProperties`, and calls `xrResumeSimultaneousHandsAndControllersTrackingMETA` when the session begins. Fails safely with a single warning if unsupported.
 - **`SimultaneousHandsAndControllersStatus`:** Runtime component exposing `IsExtensionEnabled`, `SystemReportsSupport`, and `ResumeSucceeded`.
 - **`ControllerMotionData`:** Runtime component exposing controller `rotation`, `forward`, `linearVelocity`, `angularVelocity`, `speed`, `trackingState`, `isTracked`, and `isVelocityValid`.
+- **`ControllerMotionObjectMapper`:** Maps controller rotation to any 3D object, calculates motion thresholds (`MOVING` vs `STATIC`) displayed on **TextMeshPro**, and provides a `Recenter()` function with controller button / keyboard shortcut support.
 - **`ControllerPoseIsolation`:** Runtime component that isolates controller `TrackedPoseDriver` bindings to `<XRControllerWithRumble>` and locks the 3D controller visual at its last tracked pose when set down.
 - **`MultimodalSetupUtility` (Editor):** Automatically configures OpenXR Plug-in Management and OpenXR Feature Settings for both **Standalone (Windows, Mac, Linux)** and **Android**, imports required XRI / XR Hands samples if missing, and provides **Tools > OpenXR Multimodal** menu commands.
 - **`XRSimultaneousTrackingDiagnostics` (Sample):** Logs platform, active OpenXR runtime name/version, hand and controller tracked states, simultaneous flag, and controller motion once per second.
@@ -57,18 +78,18 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 
 ---
 
-## Setup
+## Setup & Configuration
 
 ### A. Windows Editor / Standalone (via Meta Quest Link)
 
 1. Open **Edit > Project Settings > XR Plug-in Management** and select the **Windows, Mac, Linux** tab. Enable **Initialize XR on Startup** and check **OpenXR**.
-2. Open **Edit > Project Settings > XR Plug-in Management > OpenXR** (Windows, Mac, Linux tab) and set **Play Mode OpenXR Runtime** to **Oculus** (or **System Default** if Meta Quest Link is the Windows active OpenXR runtime). Note: Unity stores this dropdown in `SessionState` and resets it to **System Default** on Editor restart.
+2. Open **Edit > Project Settings > XR Plug-in Management > OpenXR** (Windows, Mac, Linux tab) and set **Play Mode OpenXR Runtime** to **Oculus** (or **System Default** if Meta Quest Link is the Windows active OpenXR runtime). *Note: Unity stores this dropdown in `SessionState` and resets it to **System Default** on Editor restart.*
 3. Under **OpenXR Feature Groups** (Windows, Mac, Linux tab), enable **Meta Simultaneous Hands and Controllers**, **Hand Tracking Subsystem**, and **Meta Hand Tracking Aim**.
 4. Under **Enabled Interaction Profiles** (Windows, Mac, Linux tab), enable **Hand Interaction Profile** and **Oculus Touch Controller Profile** (plus **Meta Quest Touch Pro / Plus** profiles if used). Leave **Hand Interaction Poses** (`HandCommonPosesInteraction`) **disabled**.
 
 ![Standalone OpenXR Settings](docs/images/openxr-settings-standalone.png)
 
-### B. Android (Meta Quest Build)
+### B. Android (Meta Quest Standalone Build)
 
 1. Open **Edit > Project Settings > XR Plug-in Management** and select the **Android** tab. Enable **Initialize XR on Startup** and check **OpenXR**.
 2. Open **Edit > Project Settings > XR Plug-in Management > OpenXR** (Android tab) and enable **Meta Quest Support**, **Meta Simultaneous Hands and Controllers**, **Hand Tracking Subsystem**, and **Meta Hand Tracking Aim**.
@@ -77,14 +98,21 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 
 ![Android OpenXR Settings](docs/images/openxr-settings-android.png)
 
-### C. Shared Scene Steps (Both Platforms)
+### C. Scene Setup for Simultaneous Tracking
 
-1. In **Window > Package Management > Package Manager**, import:
-   - **XR Interaction Toolkit** > **Starter Assets** and **Hands Interaction Demo**
-   - **XR Hands** > **HandVisualizer**
-   - **OpenXR Simultaneous Hands and Controllers (Experimental)** > **Diagnostics**
-2. On your scene's `XR Origin`, remove or disable **`XRInputModalityManager`** so both `Left/Right Hand` and `Left/Right Controller` hierarchies remain active at the same time (pre-configured in `Assets/Prefabs/XR/XR Origin Hands (XR Rig).prefab` and `Assets/Scenes/MultimodalTest.unity`).
-3. Add an empty GameObject with **`XRSimultaneousTrackingDiagnostics`** and **`ControllerMotionData`**.
+1. On your scene's `XR Origin`, remove or disable **`XRInputModalityManager`** so both `Left/Right Hand` and `Left/Right Controller` hierarchies remain active together (pre-configured in `Assets/Prefabs/XR/XR Origin Hands (XR Rig).prefab` and `Assets/Scenes/MultimodalTest.unity`).
+2. Add `ControllerPoseIsolation` to both `Left Controller` and `Right Controller` GameObjects to isolate bindings to physical motion controllers and prevent fallback snapping.
+3. (Optional) Use menu **Tools > OpenXR Multimodal > 3. Convert Active Scene XR Rig for Simultaneous Tracking** to perform this setup automatically in any active scene.
+
+---
+
+## Controller Motion Mapping & TextMeshPro Status
+
+Use [`ControllerMotionObjectMapper`](file:///e:/Unity%20New%20Projects/Flyline_IMU/Assets/Scripts/XR/ControllerMotionObjectMapper.cs) to map rotation data from the controller onto any 3D GameObject (e.g. flight stick, tool, weapon, or visual model) with a live **TextMeshPro** motion state HUD:
+
+- **Live Status:** Displays `<color=#4CAF50><b>Status: MOVING</b></color>` or `<color=#FFD54F><b>Status: STATIC</b></color>` based on linear and angular thresholds.
+- **Recenter:** Resets the 3D object rotation and adds subsequent controller rotation relative to the new reference pose. Trigger via UI Button, controller button, keyboard (<kbd>R</kbd>), or Inspector button.
+- **1-Click Creation:** Select **Tools > OpenXR Multimodal > 5. Create Motion Mapped 3D Object (Cube + TMP)** to spawn a pre-configured test rig.
 
 ---
 
@@ -93,11 +121,11 @@ https://github.com/HussienX123/Unity-OpenXR-Simultaneous-Hands-and-Controllers-M
 ### 1. Supported (Extension Enabled, System Supported, and Session Resumed)
 
 ```text
-[MetaSimultaneousHandsAndControllersFeature] Extension 'XR_META_simultaneous_hands_and_controllers' is enabled on active OpenXR runtime ('<runtime>' v<version>, Platform=<platform>) and functions were resolved for XrInstance=<instance>.
-[MetaSimultaneousHandsAndControllersFeature] xrGetSystemProperties XrResult=Success, supportsSimultaneousHandsAndControllers=True (raw=1, XrSystemId=<systemId>).
-[MetaSimultaneousHandsAndControllersFeature] xrResumeSimultaneousHandsAndControllersTrackingMETA succeeded (XrResult=Success) for XrSession=<session>.
-[XRDiagnostics] Started on Platform=<platform> | Runtime=<runtime> v<version>
-[XRDiagnostics] Platform=<platform> | Runtime=<runtime> v<version> | Controller(L=False, R=True) | Hand(L=True, R=True) | Simultaneous=True (L_Both=False, R_Both=True) | Motion(Right: RotEuler=(0.0, 0.0, 0.0), Speed=0.000 m/s, VelocityValid=True)
+[MetaSimultaneousHandsAndControllersFeature] Extension 'XR_META_simultaneous_hands_and_controllers' is enabled on active OpenXR runtime ('Oculus' v1.117.0, Platform=WindowsEditor) and functions were resolved for XrInstance=0x1.
+[MetaSimultaneousHandsAndControllersFeature] xrGetSystemProperties XrResult=Success, supportsSimultaneousHandsAndControllers=True (raw=1, XrSystemId=1).
+[MetaSimultaneousHandsAndControllersFeature] xrResumeSimultaneousHandsAndControllersTrackingMETA succeeded (XrResult=Success) for XrSession=0x2.
+[XRDiagnostics] Started on Platform=WindowsEditor | Runtime=Oculus v1.117.0
+[XRDiagnostics] Platform=WindowsEditor | Runtime=Oculus v1.117.0 | Controller(L=True, R=True) | Hand(L=True, R=True) | Simultaneous=True (L_Both=True, R_Both=True) | Motion(Right: RotEuler=(12.4, 45.1, 3.2), Speed=0.142 m/s, VelocityValid=True)
 ```
 
 ### 2. Runtime Refused (`supportsSimultaneousHandsAndControllers == 0` or Extension Not Offered)
@@ -133,10 +161,10 @@ No `[MetaSimultaneousHandsAndControllersFeature]` log lines are emitted, and `[X
 | **Unity `6000.3.12f1`** | **Compiles** | Zero compiler errors across runtime, editor, and sample assemblies |
 | **Editor (Windows) via Quest Link** | Not yet tested | PC OpenXR runtime support for `XR_META_simultaneous_hands_and_controllers` is **UNVERIFIED** |
 | **Android build on Quest** | Not yet tested | Standalone APK on Meta Quest |
+| **Meta Quest 3** | Not yet tested | Hardware multimodal supported by Meta OS |
+| **Meta Quest 3S** | Not yet tested | Hardware multimodal supported by Meta OS |
+| **Meta Quest Pro** | Not yet tested | Hardware multimodal supported by Meta OS |
 | **Meta Quest 2** | Not yet tested | Pending device verification |
-| **Meta Quest 3** | Not yet tested | Pending device verification |
-| **Meta Quest 3S** | Not yet tested | Pending device verification |
-| **Meta Quest Pro** | Not yet tested | Pending device verification |
 | **Unity `6000.0` LTS** | Not yet tested | Minimum declared `unity` version in `package.json` |
 
 ---
@@ -169,17 +197,10 @@ By default, `XRI Left/Position` and `XRI Right/Position` fall back to `<XRHandDe
 
 ---
 
-## Roadmap
+## Search & SEO Keywords
 
-- [ ] Verify on Editor over Link
-- [ ] Verify on Quest build
-- [ ] Controller rotation and velocity helpers
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). When reporting device test results or issues, please include your headset model, Quest OS version, Unity version, package version, platform tested, active OpenXR runtime name, and console logs.
+For developers searching for this capability:
+`unity openxr simultaneous hands and controllers`, `meta quest multimodal openxr unity`, `XR_META_simultaneous_hands_and_controllers`, `unity hand tracking and controller at the same time`, `track hands and controllers simultaneously meta quest 3`, `unity xr hands xr interaction toolkit multimodal`, `meta quest touch pro touch plus multimodal openxr`, `quest link simultaneous hands controllers unity`, `multimodal vr without meta sdk`, `pure openxr multimodal tracking unity`, `unity controller imu velocity rotation tracking`, `physical prop controller tracking with finger tracking unity`, `hybrid hands and controllers unity vr`.
 
 ---
 
